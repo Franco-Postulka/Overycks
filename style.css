@@ -1,0 +1,167 @@
+h1
+{
+    text-align: center;
+    font-size: 80px;
+    margin-top: 60px;
+}
+
+/*
+.rect
+{
+    width: 100%;
+    height: 50px;
+    background-color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+*/
+
+.rect img
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.Index
+{
+    /* position: fixed; */
+    position: relative;
+    z-index: 1;
+    color: white;
+}
+
+.Escalado
+{
+    width: 20px;
+    height: 20px;
+    padding-inline: 5px;
+}
+
+#Left-icons
+{
+    display: inline;
+    position: fixed;
+    margin-left: 0.90%;
+    margin-top: -45px;
+}
+
+#Right-icons
+{
+    display: inline;
+    position: fixed;
+    margin-left: 89%;
+    margin-top: -45px;
+}
+
+.Textos 
+{
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: -10px;
+    margin-left: -3px;
+    margin-right: 3px;
+}
+
+#SP
+{
+    text-align: center;
+    margin-top: 400px;
+}
+
+.Flechitas
+{
+    width: 20px;
+    height: 20px;
+    margin-top: 240px;
+}
+
+#Flechita-left
+{
+    margin-left: 20%;
+    margin-right: 58%;
+}
+
+#Indumentaria
+{
+    margin-left: 0.90%;
+    margin-top: 100px;
+}
+
+#Ordenar-por
+{
+    margin-left: 30px;
+    margin-top: 30px;
+}
+
+#Icono-ordenar
+{
+    vertical-align: middle;
+    width: 13px; 
+    height: 13px;
+    margin-left: 5px;
+    margin-top: -5px;
+}
+
+#Seccion-indument
+{
+    margin-left: 10%;
+}
+
+#Primer-articulo
+{
+    display: inline-block;
+    margin-top: 50px;
+}
+
+#Primer-articulo div
+{
+    position: relative;
+    text-align: center;
+}
+
+#Segundo-articulo
+{
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 100px;
+}
+#Segundo-articulo div
+{
+    position: relative;
+    text-align: center;
+}
+
+#Tercer-articulo
+{
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 100px;
+}
+#Tercer-articulo div
+{
+    position: relative;
+    text-align: center;
+}
+
+#Cuarto-articulo
+{
+    display: inline-block;
+    margin-top: 50px;
+    margin-left: 100px;
+}
+#Cuarto-articulo div
+{
+    position: relative;
+    text-align: center;
+}
+
+.Icons-colors
+{
+    display: inline;
+}
+
