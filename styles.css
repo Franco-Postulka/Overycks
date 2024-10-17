@@ -2,6 +2,7 @@ body, html{
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: 'Times New Roman', Times, serif;
 }
 img{
     width: 25px;
@@ -24,6 +25,9 @@ nav{
     animation-play-state: paused;
     animation-fill-mode: forwards; */
 }
+#div-central h1{
+    font-size: 30px;
+}
 /* @keyframes apear {
     0%   {opacity: 0; height: 5px;}
     100% {opacity: 1; height: fit-content;}
@@ -32,9 +36,6 @@ nav div{
     display: flex;
     flex-direction: row;
 }
-/* nav span{
-    margin: 0 5px;
-} */
 h1{
     margin:0;
 }
@@ -77,21 +78,43 @@ a{
     width: 15px;
     height: 15px;
 }
-#seccion-indument{
-    margin-top: 50px;
+
+#seccion-articulos{
+    /* margin-top: 50px; */
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: wrap;
 }
 
+#product-section{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .articulo{
     justify-content: center;
     text-align: center;
+    margin: 25px 10px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 5px;
+}
+.articulo:hover{
+    background-color: rgb(242, 241, 241);
+    padding: 0;
 }
 .articulo img{
-    width: 300px;
-    height: 300px;
+    width: 200px;
+    height: 200px;
+}
+.articulo h3{
+    margin: 0;
+}
+span{
+    font-weight: bold;
 }
 footer{
     margin-top: 60px;
