@@ -9,29 +9,20 @@ img{
     height: 25px;
 }
 nav{
-    padding: 10px 20px;
-    position: fixed;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 0 !important;
+    position: fixed !important;
     width: 100%;
     box-sizing: border-box;
+    display: flex;
+    display: flex;
+    justify-content: space-between;
 }
 #div-central{
     visibility: hidden;
-    /* opacity: 0;
-    animation-name: apear;
-    animation-duration: 2s;
-    animation-play-state: paused;
-    animation-fill-mode: forwards; */
 }
 #div-central h1{
     font-size: 30px;
 }
-/* @keyframes apear {
-    0%   {opacity: 0; height: 5px;}
-    100% {opacity: 1; height: fit-content;}
-} */
 nav div{
     display: flex;
     flex-direction: row;

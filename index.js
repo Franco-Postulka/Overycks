@@ -7,12 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (scrollPosicion >= viewportAltura *0.95) {
             navbar.style.backgroundColor = 'white';
-            navbarTitle.style.visibility = 'visible';
-            // navbarTitle.style.animationPlayState = 'running'; 
+            navbarTitle.style.visibility = 'visible'; 
         } else {
             navbar.style.backgroundColor = 'transparent';
             navbarTitle.style.visibility = 'hidden';
-            // navbarTitle.style.animationPlayState = 'paused'; 
         }
     });
 
