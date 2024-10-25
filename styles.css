@@ -20,21 +20,9 @@ nav{
 #div-central{
     visibility: hidden;
 }
-#div-central h1{
-    font-size: 30px;
-}
-nav div{
-    display: flex;
-    flex-direction: row;
-}
+
 h1{
     margin:0;
-}
-nav div a{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    margin: 5px;
 }
 a{
     text-decoration: none;
@@ -48,16 +36,19 @@ a{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: gainsboro;
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.9)), url('Recursos/Mockup/fondo.jpg');
+    /* background-image: url('Recursos/Mockup/fondo.jpg'); */
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
 }
 #overycks-title{
     font-size: 100px;
+    color: white;
 }
 #perfectionis-paragraph{
     padding-top: 50px;
+    color: white;
 }
 #flechitas{
     width: 100%;
@@ -66,8 +57,8 @@ a{
     justify-content: space-around;
 }
 #flechitas img{
-    width: 15px;
-    height: 15px;
+    width: 35px;
+    height: 35px;
 }
 
 #seccion-articulos{
