@@ -36,7 +36,7 @@ h1{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.9)), url('Recursos/Mockup/fondo.jpg');
+    background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.9)), url('../Recursos/Mockup/fondo.jpg');
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
