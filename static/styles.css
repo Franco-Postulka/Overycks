@@ -148,6 +148,47 @@ footer{
     margin: 5px;
 }
 
+#articulo_particular_div{
+    padding: 100px;
+    display: flex;
+    flex: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+#articulo_particular_div div{
+    display: flex;
+    flex-direction: column;
+}
+#imagenes-chicas img{
+    width: 100px;
+    height: 100px;
+    margin: 0px 20px;
+    /* background-color: gainsboro;
+    border-radius: 10px; */
+}
+#talles{
+    display: flex;
+    flex-direction: row !important;
+    margin: 10px 0;
+    align-items: center;
+}
+#talles button{
+    width: 50px;
+    margin: 2px;
+}
+#imagenes-chicas img:hover{
+    width: 120px;
+    height: 120px;
+    margin: 0;
+}
+#imagen-principal img{
+    width: 500px;
+    height: 500px;
+}
+#info-principa{
+    max-width: 100px !important;
+}
 @media (max-width: 750px) {
     #overycks-title{
         font-size: 80px;
