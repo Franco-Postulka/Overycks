@@ -17,17 +17,17 @@ nav{
     display: flex;
     justify-content: space-between;
 }
+nav a{
+    text-decoration: none;
+    outline: none;
+    color: black;
+}
 #div-central{
     visibility: hidden;
 }
 
 h1{
     margin:0;
-}
-a{
-    text-decoration: none;
-    outline: none;
-    color: black;
 }
 #index {
     width: 100%;
@@ -37,7 +37,6 @@ a{
     align-items: center;
     justify-content: center;
     background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.9)), url('Recursos/Mockup/fondo.jpg');
-    /* background-image: url('Recursos/Mockup/fondo.jpg'); */
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
@@ -62,7 +61,6 @@ a{
 }
 
 #seccion-articulos{
-    /* margin-top: 50px; */
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -102,7 +100,53 @@ span{
 footer{
     margin-top: 60px;
 }
+#div-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.login{
+    width: 300px;
+    /* height: 350px; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: gainsboro;
+    /* border: 1px solid black; */
+    border-radius: 10px;
+    box-shadow: 0 4px 6px 0;
+}
+.login > *{
+    margin: 20px;
+}
+.login > div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login > div > input{
+    width: 250px;
+    margin: 10px 0;
+}
 
+#register{
+    margin-top: 80px;
+}
+#register > *{
+    margin: 10px;
+}
+
+#div-aviso-registro{
+    margin: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+#div-aviso-registro a{
+    margin: 5px;
+}
 
 @media (max-width: 750px) {
     #overycks-title{
