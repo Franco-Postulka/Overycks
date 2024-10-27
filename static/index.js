@@ -2,7 +2,7 @@ const contenedorRopa = document.getElementById("seccion-articulos");
 
 const fetchCategory = async (category) => {
     try {
-        const response = await fetch(`https://dummyjson.com/products/category/${category}?limit=20`);
+        const response = await fetch(`https://dummyjson.com/products/category/${category}`);
         if (response.ok) {
             const data = await response.json();
             return data.products;
@@ -50,7 +50,6 @@ const cargarRopa = async()=>{
 
         contenedorRopa.innerHTML = productos; 
     }
-
     catch (error){
         console.log(error.message);
     }

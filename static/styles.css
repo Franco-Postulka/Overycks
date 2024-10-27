@@ -4,6 +4,12 @@ body, html{
     height: 100%;
     font-family: 'Times New Roman', Times, serif;
 }
+header, .navbar {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    top: 0;
+}
+
 img{
     width: 25px;
     height: 25px;
@@ -164,8 +170,6 @@ footer{
     width: 100px;
     height: 100px;
     margin: 0px 20px;
-    /* background-color: gainsboro;
-    border-radius: 10px; */
 }
 #talles{
     display: flex;
@@ -188,6 +192,57 @@ footer{
 }
 #info-principa{
     max-width: 100px !important;
+}
+#carrito{
+    margin: 150px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+#productos-carrito{
+    display: flex;
+    flex-direction:row;
+    width: 50vw;
+    /* background-color: aquamarine; */
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 15px;
+    justify-content: space-between;
+    align-items: center;
+}
+#productos-carrito div{
+    margin: 30px
+}
+#productos-carrito img{
+    width: 100px;
+    height: 100px;
+}
+#precio-carrito{
+    margin-right: 20px;
+    margin-left: auto;
+    font-size: 25px;
+}
+#resumen-compra{
+    padding: 10px;
+    margin: 15px 100px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+    border: 1px solid black;
+    border-radius: 10px;
+    height: fit-content;
+}
+#resumen-compra div > span{
+    font-size: 25px;
+}
+#resumen-compra div > button{
+    margin: 15px;
+}
+#resumen-compra div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 @media (max-width: 750px) {
     #overycks-title{
