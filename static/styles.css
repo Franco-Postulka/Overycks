@@ -156,9 +156,8 @@ footer{
 
 #articulo_particular_div{
     padding: 100px;
-    display: flex;
-    flex: column;
     height: 100vh;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -378,5 +377,20 @@ footer
     }
     #resumen-compra{
         margin: 5px;
+    }
+    #articulo_particular_div{
+        padding: 50px;
+        height: 150vh;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    #imagenes-chicas{
+        margin-top: 150px;
+        display: flex;
+        flex-direction: row !important;
+    }
+    #imagenes-chicas img{
+        margin: 0px;
     }
 }
