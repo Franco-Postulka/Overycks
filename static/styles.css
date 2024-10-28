@@ -253,9 +253,9 @@ footer
     align-items: center;
     justify-content: space-evenly;
 }
-#logoFooter
-{
-    font-size: 50px !important;
+#logoFooter h1{
+    font-size: 70px !important;
+    font-weight: 700 !important;
 }
 #linea
 {
