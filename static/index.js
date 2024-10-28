@@ -3,6 +3,7 @@ const productosPorPagina = 8;
 let paginaActual = 1;
 
 
+
 const fetchCategory = async (category) => {
     try {
         const response = await fetch(`https://dummyjson.com/products/category/${category}`);
@@ -13,7 +14,7 @@ const fetchCategory = async (category) => {
             console.error(`Error en el fetch de ${category}, status ${response.status}`);
             return [];
         }
-        } catch (error) {
+    } catch (error) {
         console.error(`Error en el fetch de ${category}:`, error);
         return [];
         }
@@ -22,7 +23,7 @@ const fetchCategory = async (category) => {
 const cargarRopa = async(cantidadProductos,pagina)=>{
     try{
         const categories = ['mens-shirts', 'mens-shoes', 'womens-dresses', 'womens-shoes'];
-
+        
         // se llamam a fetchCategory pasandole como parametro cada categoria
         // devuelve un array de arrays (para cada categoria un array)
         const productPromises = categories.map(fetchCategory);
@@ -30,11 +31,11 @@ const cargarRopa = async(cantidadProductos,pagina)=>{
         
         // Convertimos el array de arrays en un array solo 
         const combinedData = products.flat();
-
+        
         const hasta = cantidadProductos*pagina;
         const desde = hasta - cantidadProductos;
         const productosPorPagina = combinedData.slice(desde,hasta);
-
+        
         console.log(productosPorPagina);
         
         let productos = '';
@@ -44,22 +45,22 @@ const cargarRopa = async(cantidadProductos,pagina)=>{
             <div>
             <a onclick="verProducto(${articulo.id})" href='#'><img src="${articulo.images[0]}" alt=""></a>
             </div>
-                <div>
-                    <h5>${articulo.title}</h5>
-                    </div>
-                <div>
-                    <span>$ ${articulo.price}</span>
-                </div>
-                <div>
-                <button type="button" class="btn btn-secondary">Agregar al carrito</button>
-                </div>
-                </div>
-                `;            
-            });
+            <div>
+            <h5>${articulo.title}</h5>
+            </div>
+            <div>
+            <span>$ ${articulo.price}</span>
+            </div>
+            <div>
+            <button type="button" class="btn btn-secondary">Agregar al carrito</button>
+            </div>
+            </div>
+            `;            
+        });
             
-            contenedorRopa.innerHTML = productos; 
-
-            return productosPorPagina;
+        contenedorRopa.innerHTML = productos; 
+        
+        return productosPorPagina;
     }
     catch (error){
         console.log(error.message);
@@ -97,7 +98,62 @@ const retroceder = async()=>{
     }
 }
 
-
 function verProducto(id) {
     window.location.href = `../HTMLS/articulo.html?id=${id}`;
+}
+
+const loginForm = document.querySelector('.login');
+const registerForm = document.querySelector('#register');
+
+loginForm.addEventListener('submit', validarLogin);
+registerForm.addEventListener('submit', validarRegistro);
+
+
+function validarLogin(event){
+    event.preventDefault(); //que no se envien el form
+    
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-contra').value;
+    
+    if (!email || !password) { //si son null, undefined, '', etc
+        alert("Por favor, completa todos los campos.");
+        return false; // cancela el envio del form
+    }
+    if (!validarEmail(email)) {
+        alert("Por favor, ingresa un correo electrónico válido.");
+        return false;
+    }
+    loginForm.submit();
+}
+
+function validarRegistro(event){
+    event.preventDefault();
+
+    const name = document.getElementById('register-name').value;
+    const lastName = document.getElementById('register-lastName').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const confirmPassword = document.getElementById('register-repeat-password').value;
+
+    if (!name || !lastName || !email || !password || !confirmPassword) {
+        alert("Por favor, completa todos los campos.");
+        return false;
+    }
+
+    if (!validarEmail(email)) {
+        alert("Por favor, ingresa un correo electrónico válido.");
+        return false;
+    }
+
+    if (password !== confirmPassword) {
+        alert("Las contraseñas no coinciden.");
+        return false;
+    }
+
+    registerForm.submit();
+}
+
+function validarEmail(email) {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
 }
