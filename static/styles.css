@@ -194,7 +194,7 @@ footer{
     max-width: 100px !important;
 }
 #carrito{
-    margin: 150px;
+    margin: 150px 0px;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -202,8 +202,7 @@ footer{
 #productos-carrito{
     display: flex;
     flex-direction:row;
-    width: 50vw;
-    /* background-color: aquamarine; */
+    width: 60vw;
     border: 1px solid black;
     border-radius: 10px;
     margin: 15px;
@@ -211,27 +210,28 @@ footer{
     align-items: center;
 }
 #productos-carrito div{
-    margin: 30px
+    margin: 10px
 }
 #productos-carrito img{
     width: 100px;
     height: 100px;
 }
 #precio-carrito{
-    margin-right: 20px;
+    margin-right: 10px;
     margin-left: auto;
-    font-size: 25px;
+    font-size: 20px;
 }
 #resumen-compra{
     padding: 10px;
-    margin: 15px 100px;
+    margin: 15px 50px;
     display: flex;
     flex-direction: column;
-    /* justify-content: center; */
-    /* align-items: center; */
     border: 1px solid black;
     border-radius: 10px;
     height: fit-content;
+}
+#resumen-compra h3{
+    margin: auto;
 }
 #resumen-compra div > span{
     font-size: 25px;
@@ -247,5 +247,18 @@ footer{
 @media (max-width: 750px) {
     #overycks-title{
         font-size: 80px;
+    }
+    #carrito{
+        flex-direction: column;
+    }
+    #productos-carrito{
+        width: 95vw;
+        margin: 5px;
+    }
+    #precio-carrito{
+        font-size: 18px;
+    }
+    #resumen-compra{
+        margin: 5px;
     }
 }
