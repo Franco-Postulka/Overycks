@@ -2,7 +2,7 @@ body, html{
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Times New Roman', Times, serif !important;
 }
 header, .navbar {
     margin-top: 0 !important;
@@ -244,6 +244,124 @@ footer{
     flex-direction: column;
     align-items: center;
 }
+
+/*Footer*/
+footer
+{
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+#logoFooter
+{
+    font-size: 50px !important;
+}
+#linea
+{
+    width: 3px;
+    height: 60%;
+    background-color: black;
+    margin-left: 25px;
+}
+#nuestrasRedes
+{
+    text-align: center;
+    padding: 20px;
+}
+#redesIconos img,
+#redesIconos a
+{
+    width: 60px;
+    height: 60px;
+    padding: 10px;
+    text-decoration: none;
+}
+#Copyright 
+{
+    position: absolute;
+    align-self: flex-end;
+}
+
+/*Sobre Nosotros*/
+.texto  
+{
+    width: 400px;
+    color: white;
+    font-size: 15px;
+    text-align: justify;
+}
+/*Reescalado*/
+#atlas img
+{
+    width: 120px;
+    height: 120px;
+    filter: invert(100%);
+}
+#casco img 
+{
+    width: 120px;
+    height: 120px;
+    filter: invert(100%);
+}
+#columna img
+{
+    width: 120px;
+    height: 120px;
+    filter: invert(100%);
+}
+
+.leyendas
+{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    padding: 20px;
+    padding-right: 95px;
+}
+#quienesSomos 
+{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    
+    width: 100%;
+    background-image: url('../Recursos/Fondo2.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#quienesSomos h1
+{
+    font-size: 60px;
+    color: white;
+}
+#synonymaLeyendas
+{
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.textoLeft  
+{
+    width: 500px;
+    color: white;
+    font-size: 15px;
+    text-align: justify;
+}
+#lineaQS
+{
+    width: 3px;
+    height: 50%;
+    background-color: white;
+    margin-left: 35px;
+}
+
 @media (max-width: 750px) {
     #overycks-title{
         font-size: 80px;
