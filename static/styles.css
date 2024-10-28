@@ -322,7 +322,7 @@ footer
 }
 #quienesSomos 
 {
-    height: 100vh;
+    margin-top: 50px;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
