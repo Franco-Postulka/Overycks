@@ -1,4 +1,7 @@
 const contenedorRopa = document.getElementById("seccion-articulos");
+const productosPorPagina = 8;
+let paginaActual = 1;
+
 
 const fetchCategory = async (category) => {
     try {
@@ -16,7 +19,7 @@ const fetchCategory = async (category) => {
         }
     };
 
-const cargarRopa = async()=>{
+const cargarRopa = async(cantidadProductos,pagina)=>{
     try{
         const categories = ['mens-shirts', 'mens-shoes', 'womens-dresses', 'womens-shoes'];
 
@@ -27,35 +30,74 @@ const cargarRopa = async()=>{
         
         // Convertimos el array de arrays en un array solo 
         const combinedData = products.flat();
-        console.log(combinedData);
+
+        const hasta = cantidadProductos*pagina;
+        const desde = hasta - cantidadProductos;
+        const productosPorPagina = combinedData.slice(desde,hasta);
+
+        console.log(productosPorPagina);
+        
         let productos = '';
-        combinedData.forEach(articulo => {
+        productosPorPagina.forEach(articulo => {
             productos += `
             <div class="articulo" id=${articulo.id}>
-                <div>
-                    <a onclick="verProducto(${articulo.id})" href='#'><img src="${articulo.images[0]}" alt=""></a>
-                </div>
+            <div>
+            <a onclick="verProducto(${articulo.id})" href='#'><img src="${articulo.images[0]}" alt=""></a>
+            </div>
                 <div>
                     <h5>${articulo.title}</h5>
-                </div>
+                    </div>
                 <div>
                     <span>$ ${articulo.price}</span>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-secondary">Agregar al carrito</button>
+                <button type="button" class="btn btn-secondary">Agregar al carrito</button>
                 </div>
-            </div>
-            `;            
-        });
+                </div>
+                `;            
+            });
+            
+            contenedorRopa.innerHTML = productos; 
 
-        contenedorRopa.innerHTML = productos; 
+            return productosPorPagina;
     }
     catch (error){
         console.log(error.message);
     }
 }
-cargarRopa();
+cargarRopa(productosPorPagina,paginaActual);
 
-const verProducto = async(id) =>{
+const adelantar = async () => {
+    try {
+        paginaActual += 1;
+        const productos = await cargarRopa(productosPorPagina, paginaActual);
+        
+        if (productos.length === 0) {
+            alert('Está en la última página, no hay más productos.');
+            paginaActual -= 1; 
+            cargarRopa(productosPorPagina, paginaActual);
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+};
+
+const retroceder = async()=>{
+    try{
+        if (paginaActual === 1){
+            alert('Está en la primer página, no puede retroceder.')
+        }
+        else{
+            paginaActual -=1;
+            cargarRopa(productosPorPagina,paginaActual);
+        }
+    }
+    catch (error){
+        console.log(error.message);
+    }
+}
+
+
+function verProducto(id) {
     window.location.href = `../HTMLS/articulo.html?id=${id}`;
 }
