@@ -10,12 +10,11 @@ app.use(helmet());
 app.use(express.json());
 
 //Importar routes
-
-// EJ: const themoviedbRoutes = require('./routes/themoviesdb');
+const userRouter = require("./routers/userRouter");
 
 // Use de las Routes
 
-// EJ: app.use('/api/themoviesdb', themoviedbRoutes);
+app.use("/api/user", userRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));

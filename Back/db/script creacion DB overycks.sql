@@ -1,21 +1,13 @@
 CREATE DATABASE overycks;
 USE overycks;
 
-CREATE TABLE tipo_usuario(
-id INT PRIMARY KEY AUTO_INCREMENT,
-tipo varchar(50) NOT NULL
-);
-
 CREATE TABLE usuario(
 id INT PRIMARY KEY AUTO_INCREMENT,
-direccion VARCHAR(120) NOT NULL,
-dni INT NOT NULL,
 nombre VARCHAR(40) NOT NULL,
 email VARCHAR(50) NOT NULL,
-contrasenia VARCHAR(50) NOT NULL,
-tipo_usuario INT NOT NULL,
-foreign key(tipo_usuario) REFERENCES tipo_usuario(id)
+contrasenia VARCHAR(300) NOT NULL
 );
+
 
 CREATE TABLE producto(
 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -251,4 +243,4 @@ INSERT INTO imagenes_productos (id_producto, id_imagenes) VALUES
 SELECT * FROM producto;
 SELECT * FROM imagenes;
 SELECT * FROM imagenes_productos;
-
+SELECT * FROM usuario;
