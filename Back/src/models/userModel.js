@@ -17,4 +17,28 @@ const checkUusario = async (username, email) => {
   );
   return result;
 };
-module.exports = { insertUser, checkUusario };
+
+//buscar por username
+const findUserByUsername = async (username) => {
+  const [result] = await db.query(
+    "SELECT id, contrasenia FROM usuario WHERE nombre = ?",
+    [username]
+  );
+  return result;
+};
+
+//obtencion de usuario por pagina
+const findUserWithPagination = async (limit, offset) => {
+  const [result] = await db.query(
+    "SELECT id, nombre ,email FROM usuario LIMIT ? OFFSET ?",
+    [limit, offset]
+  );
+  return result;
+};
+
+module.exports = {
+  insertUser,
+  checkUusario,
+  findUserByUsername,
+  findUserWithPagination,
+};

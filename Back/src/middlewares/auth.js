@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
-const authenticationToken = (req, red, next) => {
-  const token = req.headers["authorization"]?.split("")[1];
+const authenticationToken = (req, res, next) => {
+  const token = req.headers["authorization"]?.split(" ")[1];
   if (!token) {
     return res.status(401).json({ error: "Sin token, autorizacion denegada" });
   }
@@ -11,7 +11,7 @@ const authenticationToken = (req, red, next) => {
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ message: "el token no es valido" });
+    res.status(401).json({ message: "el token no es valido", error: err });
   }
 };
 

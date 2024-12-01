@@ -13,7 +13,6 @@ app.use(express.json());
 const userRouter = require("./routers/userRouter");
 
 // Use de las Routes
-
 app.use("/api/user", userRouter);
 
 const PORT = process.env.PORT || 3000;
