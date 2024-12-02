@@ -76,6 +76,8 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+
+
 module.exports = {
   login,
   createUser: validacionSchema(createUserSchema),
