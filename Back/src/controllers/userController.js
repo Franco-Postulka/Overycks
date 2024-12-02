@@ -1,6 +1,10 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { validacionSchema, createUserSchema } = require("../utils/validacion");
+const {
+  validacionSchema,
+  createUserSchema,
+  updateUserSchema,
+} = require("../utils/validacion");
 const userModel = require("../models/userModel");
 
 // login
@@ -76,11 +80,70 @@ const getAllUsers = async (req, res) => {
   }
 };
 
+// modificacion de usuarios
+const updateUser = async (req, res) => {
+  try {
+    const { userID } = req.params;
+    const updateFields = updateUserSchema.parse(req.body);
 
+    if (updateFields.password) {
+      updateFields.contrasenia = await bcrypt.hash(updateFields.password, 10);
+      delete updateFields.password;
+    }
+    if (updateFields.username) {
+      updateFields.nombre = updateFields.username;
+      delete updateFields.username;
+    }
 
+    const result = await userModel.updateUser(userID, updateFields);
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Usuario no encontrado" });
+    }
+
+    res.json({
+      status: "success",
+      message: "Usuario actualizado con exito",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      stauts: "error",
+      message: "Error al acutalizar el usuario",
+      error: error.message,
+    });
+  }
+};
+
+// eliminado de usuario
+const deleteUser = async (req, res) => {
+  try {
+    const { userID } = req.params;
+    const result = await userModel.deleteUser(userID);
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Usuario no encontrado" });
+    }
+    res.json({
+      status: "success",
+      message: "Usuario eliminado con exito",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Usuario no se pudo eliminar",
+      error: error,
+    });
+  }
+};
 module.exports = {
   login,
-  createUser: validacionSchema(createUserSchema),
+  createUser: [validacionSchema(createUserSchema), createUser],
   createUser,
   getAllUsers,
+  updateUser: [validacionSchema(updateUserSchema), updateUser],
+  deleteUser,
 };

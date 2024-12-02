@@ -36,9 +36,30 @@ const findUserWithPagination = async (limit, offset) => {
   return result;
 };
 
+//actualizacion de usuario
+const updateUser = async (userID, updatedFields) => {
+  const setClause = Object.keys(updatedFields)
+    .map((key) => `${key} = ?`)
+    .join(", ");
+  const values = [...Object.values(updatedFields), userID];
+  const [result] = await db.query(
+    `UPDATE usuario SET ${setClause} WHERE id = ?`,
+    values
+  );
+  return result;
+};
+
+//eliminado de usuario
+const deleteUser = async (userID) => {
+  const [result] = await db.query(`DELETE FROM usuario WHERE id = ?`, userID);
+  return result;
+};
+
 module.exports = {
   insertUser,
   checkUusario,
   findUserByUsername,
   findUserWithPagination,
+  updateUser,
+  deleteUser,
 };

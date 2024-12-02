@@ -5,7 +5,7 @@ const validacionSchema = (schema) => (req, res, next) => {
     schema.parse(req.body);
     next();
   } catch (error) {
-    res.status(400).jason({
+    res.status(400).json({
       status: "error",
       message: "Entrada no valida",
       error: error.message,
@@ -21,5 +21,6 @@ const createUserSchema = z.object({
     .string()
     .min(8, "La contraseña debe tener un minimo de 8 caracteres"),
 });
+const updateUserSchema = createUserSchema.partial();
 
-module.exports = { createUserSchema, validacionSchema };
+module.exports = { createUserSchema, validacionSchema, updateUserSchema };
