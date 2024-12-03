@@ -62,7 +62,6 @@ const cargarRopa = async (cantidadProductos, pagina) => {
     console.log(error.message);
   }
 };
-cargarRopa(productosPorPagina, paginaActual);
 
 const adelantar = async () => {
   try {
@@ -97,28 +96,59 @@ function verProducto(id) {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  cargarRopa(productosPorPagina, paginaActual);
   const loginForm = document.querySelector(".login");
   const registerForm = document.querySelector("#register");
-  loginForm.addEventListener("submit", validarLogin);
-  registerForm.addEventListener("submit", validarRegistro);
+  if (loginForm) {
+    loginForm.addEventListener("submit", validarLogin);
+  }
+  if (registerForm) {
+    registerForm.addEventListener("submit", validarRegistro);
+  }
 });
 
 function validarLogin(event) {
   event.preventDefault(); //que no se envien el form
 
-  const email = document.getElementById("login-email").value;
+  const userName = document.getElementById("login-username").value;
   const password = document.getElementById("login-contra").value;
 
-  if (!email || !password) {
+  if (!userName || !password) {
     //si son null, undefined, '', etc
     alert("Por favor, completa todos los campos.");
     return false; // cancela el envio del form
   }
-  if (!validarEmail(email)) {
-    alert("Por favor, ingresa un correo electrónico válido.");
-    return false;
-  }
-  loginForm.submit();
+
+  fetch("http://localhost:3000/api/user/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: userName,
+      password: password,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        return response.json().then((errorData) => {
+          throw new Error(errorData.message || `Error: ${response.status}`);
+        });
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Inicio de sesion con éxito:", data);
+      alert("¡Inicio de sesión exitoso!");
+      document.getElementById("login-username").value = "";
+      document.getElementById("login-contra").value = "";
+    })
+    .catch((error) => {
+      console.error("Error en el inicio de sesion:", error.message);
+      alert(
+        `Hubo un error durante el inicio de sesion: ${error.message} Intenta nuevamente.`
+      );
+    });
 }
 
 function validarRegistro(event) {
@@ -165,9 +195,9 @@ function validarRegistro(event) {
   })
     .then((response) => {
       if (!response.ok) {
-        throw new Error(
-          `Error: ${response.status}, mail o usuario ya en uso`// las otras opciones ya estan validads
-        );
+        return response.json().then((errorData) => {
+          throw new Error(errorData.message || `Error: ${response.status}`);
+        });
       }
       return response.json();
     })
