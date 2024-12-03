@@ -1,7 +1,7 @@
 const db = require("../config/database");
 
 //buscar por id
-const findProductoById = async (id) => {
+const findProductById = async (id) => {
   const [result] = await db.query(
     "SELECT id, titulo, descripcion, precio FROM producto WHERE id = ?",
     [id]
@@ -22,4 +22,31 @@ const findImagesByProductId = async (id) => {
   return result;
 };
 
-module.exports = { findProductoById, findImagesByProductId };
+// traet todos los productos
+const getAllProducts = async () => {
+  const [result] = await db.query(
+    "SELECT id, titulo, descripcion, precio FROM producto;"
+  );
+  return result;
+};
+
+//traer las imagenes 
+const getImages = async () => {
+  const [result] = await db.query("SELECT id, url FROM imagenes;");
+  return result;
+};
+//traer interrelacion imagenes con productos
+const getImagesMapedProductos = async () => {
+  const [result] = await db.query(
+    "SELECT id_producto, id_imagenes FROM imagenes_productos;"
+  );
+  return result;
+};
+
+module.exports = {
+  findProductById,
+  findImagesByProductId,
+  getAllProducts,
+  getImages,
+  getImagesMapedProductos,
+};
