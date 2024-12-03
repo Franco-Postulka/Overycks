@@ -2,77 +2,51 @@ const contenedorRopa = document.getElementById("seccion-articulos");
 const productosPorPagina = 8;
 let paginaActual = 1;
 
-const fetchCategory = async (category) => {
-  try {
-    const response = await fetch(
-      `https://dummyjson.com/products/category/${category}`
-    );
-    if (response.ok) {
-      const data = await response.json();
-      return data.products;
-    } else {
-      console.error(
-        `Error en el fetch de ${category}, status ${response.status}`
-      );
-      return [];
-    }
-  } catch (error) {
-    console.error(`Error en el fetch de ${category}:`, error);
-    return [];
-  }
-};
-
 const cargarRopa = async (cantidadProductos, pagina) => {
   try {
-    const categories = [
-      "mens-shirts",
-      "mens-shoes",
-      "womens-dresses",
-      "womens-shoes",
-    ];
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3000/api/product/products`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          return data;
+        } else {
+          console.error(
+            `Error en el fetch de productos, status ${response.status}`
+          );
+          return [];
+        }
+      } catch (error) {
+        console.error(`Error en el fetch de productos:`, error);
+        return [];
+      }
+    };
 
-    // se llamam a fetchCategory pasandole como parametro cada categoria
-    // devuelve un array de arrays (para cada categoria un array)
-    const productPromises = categories.map(fetchCategory);
-    const products = await Promise.all(productPromises); //se espera a la promesa y se guarda
+    const data = await fetchData();
 
-    // Convertimos el array de arrays en un array solo
-    const combinedData = products.flat();
-    // console.log(combinedData);
-    // let insertProducto = "";
-    // let insertImagenes = "";
-    // let insertImagenesProductos = "";
-    // let idsImagenes = 1;
-    // let idsProductos = 1;
-    // combinedData.forEach((producto) => {
-    //   insertProducto += `("${producto.title}", "${producto.description}" ,${producto.price}),\n`;
-    //   producto.images.forEach((imagen) => {
-    //     insertImagenes += `("${imagen}"),\n`;
-    //     insertImagenesProductos += `(${idsProductos},${idsImagenes}),\n`;
-    //     idsImagenes += 1;
-    //   });
-    //   idsProductos += 1;
-    // });
-    // console.log(insertProducto);
-    // console.log(insertImagenes);
-    // console.log(insertImagenesProductos);
+    // Validar si data está disponible
+    if (!data || !data.productsWithImages) {
+      throw new Error("No se pudo obtener los productos o están vacíos.");
+    }
 
     const hasta = cantidadProductos * pagina;
     const desde = hasta - cantidadProductos;
-    const productosPorPagina = combinedData.slice(desde, hasta);
+    const productosPorPagina = data.productsWithImages.slice(desde, hasta);
 
     let productos = "";
     productosPorPagina.forEach((articulo) => {
       productos += `
             <div class="articulo" id=${articulo.id}>
             <div>
-            <a onclick="verProducto(${articulo.id})" href='#'><img src="${articulo.images[0]}" alt=""></a>
+            <a onclick="verProducto(${articulo.id})" href='#'><img src="${articulo.images[0].url}" alt=""></a>
             </div>
             <div>
-            <h5>${articulo.title}</h5>
+            <h5>${articulo.titulo}</h5>
             </div>
             <div>
-            <span>$ ${articulo.price}</span>
+            <span>$ ${articulo.precio}</span>
             </div>
             <div>
             <button type="button" class="btn btn-secondary">Agregar al carrito</button>
