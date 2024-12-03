@@ -49,7 +49,7 @@ const cargarRopa = async (cantidadProductos, pagina) => {
             <span>$ ${articulo.precio}</span>
             </div>
             <div>
-            <button type="button" class="btn btn-secondary">Agregar al carrito</button>
+            <button type="button" class="btn btn-secondary" onclick="agregarAlCarrito(${articulo.id})" >Agregar al carrito</button>
             </div>
             </div>
             `;
@@ -95,6 +95,50 @@ function verProducto(id) {
   window.location.href = `../HTMLS/articulo.html?id=${id}`;
 }
 
+const agregarAlCarrito = async (id_producto) => {
+  const token = localStorage.getItem("token");
+  const id_usuario = localStorage.getItem("userid");
+  if (!token || !id_usuario) {
+    alert("Necesitas iniciar sesión para agregar al carrito.");
+    window.location.href = "../HTMLS/login.html";
+    return;
+  }
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/carrito/addcarrito",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id_producto: id_producto,
+          id_usuario: id_usuario,
+        }),
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message === "el token no es valido") {
+        console.log(errorData);
+        alert(`Necesitas iniciar sesión para agregar al carrito.`);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userid");
+        window.location.href = "../HTMLS/login.html";
+        return;
+      }
+      alert(`Error: ${errorData.message}`);
+      return;
+    }
+    const data = await response.json();
+    alert("Producto agregado al carrito con éxito.");
+  } catch (error) {
+    console.error("Error al agregar al carrito:", error.message);
+    alert("Hubo un error. Intenta de nuevo.");
+  }
+};
+
 document.addEventListener("DOMContentLoaded", function () {
   cargarRopa(productosPorPagina, paginaActual);
   const loginForm = document.querySelector(".login");
@@ -138,10 +182,12 @@ function validarLogin(event) {
       return response.json();
     })
     .then((data) => {
-      console.log("Inicio de sesion con éxito:", data);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("userid", data.userid);
       alert("¡Inicio de sesión exitoso!");
       document.getElementById("login-username").value = "";
       document.getElementById("login-contra").value = "";
+      window.location.href = `../../index.html`;
     })
     .catch((error) => {
       console.error("Error en el inicio de sesion:", error.message);
@@ -208,6 +254,7 @@ function validarRegistro(event) {
       document.getElementById("register-email").value = "";
       document.getElementById("register-password").value = "";
       document.getElementById("register-repeat-password").value = "";
+      window.location.href = "../HTMLS/login.html";
     })
     .catch((error) => {
       console.error("Error en el registro:", error.message);

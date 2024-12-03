@@ -21,9 +21,7 @@ const addToCarrito = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    if (
-      error.message === "Duplicate entry '2-1' for key 'carrito.id_producto'"
-    ) {
+    if (error.message.startsWith("Duplicate entry")) {
       res.status(400).json({
         stauts: "error",
         message: "El producto ya ha sido añadido al carrito.",
