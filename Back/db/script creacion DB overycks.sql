@@ -5,9 +5,8 @@ CREATE TABLE usuario(
 id INT PRIMARY KEY AUTO_INCREMENT,
 nombre VARCHAR(40) NOT NULL,
 email VARCHAR(50) NOT NULL,
-contrasenia VARCHAR(300) NOT NULL
+contrasenia VARCHAR(50) NOT NULL
 );
-
 
 CREATE TABLE producto(
 id INT PRIMARY KEY AUTO_INCREMENT,
@@ -16,12 +15,13 @@ descripcion VARCHAR(500) NOT NULL,
 precio FLOAT NOT NULL
 );
 
-CREATE TABLE carrito(
-id_producto INT NOT NULL,
-id_usuario INT NOT NULL,
-unidades INT NOT NULL,
-foreign key (id_producto) references producto(id),
-foreign key (id_usuario) references usuario(id)
+CREATE TABLE carrito (
+    id_producto INT NOT NULL,
+    id_usuario INT NOT NULL,
+    unidades INT NOT NULL,
+    FOREIGN KEY (id_producto) REFERENCES producto(id),
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    UNIQUE (id_producto, id_usuario)
 );
 
 CREATE TABLE favoritos(
@@ -240,7 +240,9 @@ INSERT INTO imagenes_productos (id_producto, id_imagenes) VALUES
 (20,80)
 ;
 
+use overycks;
 SELECT * FROM producto;
 SELECT * FROM imagenes;
 SELECT * FROM imagenes_productos;
 SELECT * FROM usuario;
+SELECT * FROM carrito;

@@ -12,10 +12,11 @@ app.use(express.json());
 //Importar routes
 const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
-
+const carritoRouter = require("./routers/carritoRouter");
 // Use de las Routes
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
+app.use("/api/carrito", carritoRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));

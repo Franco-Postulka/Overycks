@@ -13,7 +13,6 @@ router.post("/registracion", createUser);
 router.post("/login", login);
 router.get("/users", authenticationToken, getAllUsers);
 router.put("/users/:userID", authenticationToken, updateUser);
-router.put("/users/:userID", authenticationToken, updateUser);
 router.delete("/users/:userID", authenticationToken, deleteUser);
 
 module.exports = router;
