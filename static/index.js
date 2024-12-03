@@ -96,11 +96,12 @@ function verProducto(id) {
   window.location.href = `../HTMLS/articulo.html?id=${id}`;
 }
 
-const loginForm = document.querySelector(".login");
-const registerForm = document.querySelector("#register");
-
-loginForm.addEventListener("submit", validarLogin);
-registerForm.addEventListener("submit", validarRegistro);
+document.addEventListener("DOMContentLoaded", function () {
+  const loginForm = document.querySelector(".login");
+  const registerForm = document.querySelector("#register");
+  loginForm.addEventListener("submit", validarLogin);
+  registerForm.addEventListener("submit", validarRegistro);
+});
 
 function validarLogin(event) {
   event.preventDefault(); //que no se envien el form
@@ -123,15 +124,14 @@ function validarLogin(event) {
 function validarRegistro(event) {
   event.preventDefault();
 
-  const name = document.getElementById("register-name").value;
-  const lastName = document.getElementById("register-lastName").value;
+  const userName = document.getElementById("register-username").value;
   const email = document.getElementById("register-email").value;
   const password = document.getElementById("register-password").value;
   const confirmPassword = document.getElementById(
     "register-repeat-password"
   ).value;
 
-  if (!name || !lastName || !email || !password || !confirmPassword) {
+  if (!userName || !email || !password || !confirmPassword) {
     alert("Por favor, completa todos los campos.");
     return false;
   }
@@ -144,9 +144,47 @@ function validarRegistro(event) {
   if (password !== confirmPassword) {
     alert("Las contraseñas no coinciden.");
     return false;
+  } else if (userName.length < 3) {
+    alert("El usuario debe tener al menos 3 caracteres.");
+    return false;
+  } else if (password.length < 8) {
+    alert("La contraseña debe tener al menos 8 caracteres.");
+    return false;
   }
 
-  registerForm.submit();
+  fetch("http://localhost:3000/api/user/registracion", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: userName,
+      email: email,
+      password: password,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(
+          `Error: ${response.status}, mail o usuario ya en uso`// las otras opciones ya estan validads
+        );
+      }
+      return response.json();
+    })
+    .then((data) => {
+      console.log("Usuario registrado con éxito:", data);
+      alert("Registro exitoso. ¡Bienvenido!");
+      document.getElementById("register-username").value = "";
+      document.getElementById("register-email").value = "";
+      document.getElementById("register-password").value = "";
+      document.getElementById("register-repeat-password").value = "";
+    })
+    .catch((error) => {
+      console.error("Error en el registro:", error.message);
+      alert(
+        `Hubo un error durante el registro: ${error.message} Intenta nuevamente.`
+      );
+    });
 }
 
 function validarEmail(email) {
