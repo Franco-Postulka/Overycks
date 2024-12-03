@@ -61,7 +61,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                 <button class="btn btn-outline-dark">L</button>
                 <button class="btn btn-outline-dark">XL</button>
             </div>
-            <button class="btn btn-secondary">Agregar al carrito</button>
+            <button class="btn btn-secondary" onclick=agregarAlCarrito(${
+              producto.id
+            })>Agregar al carrito</button>
         </div>
         <div>
             <div>
@@ -78,3 +80,46 @@ function cambiarFoto(id, images) {
         <img src=${images[id].url} alt="producto">
     `;
 }
+const agregarAlCarrito = async (id_producto) => {
+  const token = localStorage.getItem("token");
+  const id_usuario = localStorage.getItem("userid");
+  if (!token || !id_usuario) {
+    alert("Necesitas iniciar sesión para agregar al carrito.");
+    window.location.href = "../HTMLS/login.html";
+    return;
+  }
+  try {
+    const response = await fetch(
+      "http://localhost:3000/api/carrito/addcarrito",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          id_producto: id_producto,
+          id_usuario: id_usuario,
+        }),
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message === "el token no es valido") {
+        console.log(errorData);
+        alert(`Necesitas iniciar sesión para agregar al carrito.`);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userid");
+        window.location.href = "../HTMLS/login.html";
+        return;
+      }
+      alert(`Error: ${errorData.message}`);
+      return;
+    }
+    const data = await response.json();
+    alert("Producto agregado al carrito con éxito.");
+  } catch (error) {
+    console.error("Error al agregar al carrito:", error.message);
+    alert("Hubo un error. Intenta de nuevo.");
+  }
+};
