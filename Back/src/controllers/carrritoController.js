@@ -41,16 +41,24 @@ const getAllProductsInCarrito = async (req, res) => {
   try {
     const { id } = req.params;
     const productsInCarrito = await carritoModel.getAllProductsInCarrito(id);
+    const imagesInCarrito = await carritoModel.getAllImagesInCarrito(id);
     if (productsInCarrito.length >= 1) {
+      const productsWithImages = productsInCarrito.map((product) => {
+        const images = imagesInCarrito
+          .filter((image) => image.id === product.id) // image.id es el id del producto
+          .map((image) => image.url);
+        return { ...product, images };
+      });
+
       res.json({
         status: "success",
-        message: "Obtencion de productos en carrito exitosa",
-        productsInCarrito,
+        message: "Obtención de productos en carrito exitosa",
+        products: productsWithImages,
       });
     } else {
       return res
         .status(400)
-        .json({ message: "El suario no tiene productos en el carrito" });
+        .json({ message: "El usuario no tiene productos en el carrito" });
     }
   } catch (error) {
     res.status(500).json({

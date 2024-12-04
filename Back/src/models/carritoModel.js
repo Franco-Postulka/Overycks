@@ -9,10 +9,9 @@ const addPorductToCarrito = async (id_producto, id_usuario) => {
   return result;
 };
 
-// traet todos los productos
 const getAllProductsInCarrito = async (id_usuario) => {
   const [result] = await db.query(
-    `SELECT producto.id, producto.titulo, producto.descripcion, producto.precio 
+    `SELECT producto.id, producto.titulo, producto.descripcion, producto.precio
     FROM producto
     INNER JOIN carrito ON carrito.id_producto = producto.id
     WHERE carrito.id_usuario = ?;`,
@@ -20,5 +19,26 @@ const getAllProductsInCarrito = async (id_usuario) => {
   );
   return result;
 };
+const getAllImagesInCarrito = async (id_usuario) => {
+  const [result] = await db.query(
+    `SELECT producto.id, imagenes.url
+    FROM 
+        producto
+    INNER JOIN 
+        carrito ON carrito.id_producto = producto.id
+    INNER JOIN 
+        imagenes_productos ON producto.id = imagenes_productos.id_producto
+    INNER JOIN 
+        imagenes ON imagenes_productos.id_imagenes = imagenes.id
+    WHERE 
+        carrito.id_usuario = ?;`,
+    [id_usuario]
+  );
+  return result;
+};
 
-module.exports = { addPorductToCarrito, getAllProductsInCarrito };
+module.exports = {
+  addPorductToCarrito,
+  getAllProductsInCarrito,
+  getAllImagesInCarrito,
+};
