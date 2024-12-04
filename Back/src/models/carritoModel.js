@@ -9,4 +9,16 @@ const addPorductToCarrito = async (id_producto, id_usuario) => {
   return result;
 };
 
-module.exports = { addPorductToCarrito };
+// traet todos los productos
+const getAllProductsInCarrito = async (id_usuario) => {
+  const [result] = await db.query(
+    `SELECT producto.id, producto.titulo, producto.descripcion, producto.precio 
+    FROM producto
+    INNER JOIN carrito ON carrito.id_producto = producto.id
+    WHERE carrito.id_usuario = ?;`,
+    [id_usuario]
+  );
+  return result;
+};
+
+module.exports = { addPorductToCarrito, getAllProductsInCarrito };

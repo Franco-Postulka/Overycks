@@ -37,4 +37,28 @@ const addToCarrito = async (req, res) => {
   }
 };
 
-module.exports = { addToCarrito };
+const getAllProductsInCarrito = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const productsInCarrito = await carritoModel.getAllProductsInCarrito(id);
+    if (productsInCarrito.length >= 1) {
+      res.json({
+        status: "success",
+        message: "Obtencion de productos en carrito exitosa",
+        productsInCarrito,
+      });
+    } else {
+      return res
+        .status(400)
+        .json({ message: "El suario no tiene productos en el carrito" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Error en obtencion de productos.",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = { addToCarrito, getAllProductsInCarrito };
