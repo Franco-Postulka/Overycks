@@ -44,6 +44,12 @@ const mostrarProductosDelCarrito = async () => {
     const productosEnCarrito = data.products;
 
     let productos = "";
+    let resumenDeCmpra = `
+    <h3>Resumen de compra</h3>
+        <hr />
+        <div>
+         `;
+    let acumulador = 0;
     productosEnCarrito.forEach((articulo) => {
       productos += `
         <div class="productos-carrito">
@@ -51,22 +57,40 @@ const mostrarProductosDelCarrito = async () => {
             <img src=${articulo.images[0]} alt="" />
           </div>
           <div>
-            <h4>${articulo.titulo}</h4>
+            <a onclick="verProducto(${articulo.id})" href="#"><h4>${articulo.titulo}</h4></a>
           </div>
-          <div id="precio-carrito">
-            <span>${articulo.precio}</span>
+          <div class="precio-carrito">
+            <span>$${articulo.precio}</span>
           </div>
-          <div>
+          <div class="div-botones">
             <button class="btn btn-outline-dark">Eliminar</button>
             <button class="btn btn-outline-dark">Comprar ahora</button>
           </div>
         </div>
         `;
+      resumenDeCmpra += `
+      <a onclick="verProducto(${articulo.id})" href="#">
+        <p>${articulo.titulo}<span> $ ${articulo.precio}</span></p>
+      </a>
+      
+      `;
+      acumulador += parseFloat(articulo.precio);
     });
+    resumenDeCmpra += `
+        <span>Total: $ ${acumulador}</span>
+        <button type="button" class="btn btn-primary">Comprar todos</button>
+        </div>
+    `;
     const contenedorCarrito = document.getElementById("productos-in-carrito");
     contenedorCarrito.innerHTML = productos;
+    const contenedorResumen = document.getElementById("resumen-compra");
+    contenedorResumen.innerHTML = resumenDeCmpra;
   } catch (error) {
     console.error("Error al mostrar datos del carrito:", error);
     alert("Hubo un error. Intenta de nuevo.");
   }
 };
+
+function verProducto(id) {
+  window.location.href = `../HTMLS/articulo.html?id=${id}`;
+}
