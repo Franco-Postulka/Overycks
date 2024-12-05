@@ -69,4 +69,34 @@ const getAllProductsInCarrito = async (req, res) => {
   }
 };
 
-module.exports = { addToCarrito, getAllProductsInCarrito };
+const deleteProductFromCarrito = async (req, res) => {
+  try {
+    const { id_usuario, id_producto } = req.body;
+    const result = await carritoModel.deletePorductoFromCarrito(
+      id_usuario,
+      id_producto
+    );
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Usuario o producto no encontrado" });
+    }
+    res.json({
+      status: "success",
+      message: "Producto eliminado con exito del carrito",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Producto no se pudo eliminar del carrito",
+      error: error,
+    });
+  }
+};
+
+module.exports = {
+  addToCarrito,
+  getAllProductsInCarrito,
+  deleteProductFromCarrito,
+};
