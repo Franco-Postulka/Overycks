@@ -19,16 +19,16 @@ CREATE TABLE carrito (
     id_producto INT NOT NULL,
     id_usuario INT NOT NULL,
     unidades INT NOT NULL,
-    FOREIGN KEY (id_producto) REFERENCES producto(id),
-    FOREIGN KEY (id_usuario) REFERENCES usuario(id),
+    FOREIGN KEY (id_producto) REFERENCES producto(id)  ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuario(id)  ON DELETE CASCADE,
     UNIQUE (id_producto, id_usuario)
 );
 
 CREATE TABLE favoritos(
 id_producto INT NOT NULL,
 id_usuario INT NOT NULL,
-foreign key (id_producto) references producto(id),
-foreign key (id_usuario) references usuario(id)
+foreign key (id_producto) references producto(id)  ON DELETE CASCADE,
+foreign key (id_usuario) references usuario(id)  ON DELETE CASCADE
 );
 
 CREATE TABLE stock(
@@ -36,7 +36,7 @@ id_producto INT NOT NULL,
 small INT NOT NULL,
 medium INT NOT NULL,
 large INT NOT NULL,
-foreign key (id_producto) references producto(id)
+foreign key (id_producto) references producto(id)  ON DELETE CASCADE
 );
 
 CREATE TABLE imagenes(
@@ -47,7 +47,7 @@ url VARCHAR(400) NOT NULL
 CREATE TABLE imagenes_productos(
 id_producto INT NOT NULL,
 id_imagenes INT NOT NULL,
-foreign key (id_producto) references producto(id),
+foreign key (id_producto) references producto(id) ON DELETE CASCADE,
 foreign key(id_imagenes) references imagenes(id)
 );
 
