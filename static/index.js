@@ -132,7 +132,7 @@ const agregarAlCarrito = async (id_producto) => {
       return;
     }
     const data = await response.json();
-    alert("Producto agregado al carrito con éxito.");
+    alert("Producto agregado al carrito con éxito!");
   } catch (error) {
     console.error("Error al agregar al carrito:", error.message);
     alert("Hubo un error. Intenta de nuevo.");
