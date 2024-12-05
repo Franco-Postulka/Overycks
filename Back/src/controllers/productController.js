@@ -85,7 +85,7 @@ const createProduct = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "Producto creado con exito",
-      userID: result.insertId,
+      productId: result.productId,
     });
   } catch (error) {
     res.status(400).json({
@@ -96,8 +96,37 @@ const createProduct = async (req, res) => {
   }
 };
 
+const deleteProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id || isNaN(Number(id))) {
+      return res.status(400).json({
+        status: "error",
+        message: "ID de producto inválido",
+      });
+    }
+
+    const result = await productoModel.deleteProduct(parseInt(id));
+    if (!result.success) {
+      return res.status(404).json({ status: "error", message: result.message });
+    }
+    res.json({
+      status: "success",
+      message: "Producto eliminado con exito",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: "error",
+      message: "Producto no se pudo eliminar",
+      error: error,
+    });
+  }
+};
+
 module.exports = {
   getProductWithImages,
   getAllProductsWithImages,
   createProduct: [validacionSchema(createProductSchema), createProduct],
+  deleteProduct,
 };

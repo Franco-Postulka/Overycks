@@ -78,6 +78,39 @@ const insertProduct = async (titulo, descripcion, precio, imagenes) => {
   }
 };
 
+const deleteProduct = async (productID) => {
+  const connection = await db.getConnection();
+  try {
+    await connection.beginTransaction();
+    //elimina imágenes asociadas al producto
+    await connection.query(
+      `DELETE FROM imagenes 
+       WHERE id IN (
+         SELECT id_imagenes 
+         FROM imagenes_productos 
+         WHERE id_producto = ?
+       );`,
+      [productID]
+    );
+    const [result] = await connection.query(
+      `DELETE FROM producto WHERE id = ?;`,
+      [productID]
+    );
+    await connection.commit();
+
+    if (result.affectedRows === 0) {
+      return { success: false, message: "Producto no encontrado" };
+    }
+
+    return { success: true, message: "Producto eliminado con éxito" };
+  } catch (error) {
+    await connection.rollback(); // Revertir cambios
+    return { success: false, message: "Error al eliminar el producto", error };
+  } finally {
+    connection.release();
+  }
+};
+
 module.exports = {
   findProductById,
   findImagesByProductId,
@@ -85,4 +118,5 @@ module.exports = {
   getImages,
   getImagesMapedProductos,
   insertProduct,
+  deleteProduct,
 };

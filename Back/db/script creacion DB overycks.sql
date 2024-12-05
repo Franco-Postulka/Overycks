@@ -48,7 +48,7 @@ CREATE TABLE imagenes_productos(
 id_producto INT NOT NULL,
 id_imagenes INT NOT NULL,
 foreign key (id_producto) references producto(id) ON DELETE CASCADE,
-foreign key(id_imagenes) references imagenes(id)
+foreign key(id_imagenes) references imagenes(id) ON DELETE CASCADE
 );
 
 INSERT INTO producto (titulo, descripcion, precio) VALUES
@@ -241,6 +241,11 @@ INSERT INTO imagenes_productos (id_producto, id_imagenes) VALUES
 ;
 
 use overycks;
+DROP TABLE carrito;
+DROP TABLE producto;
+DROP TABLE favoritos;
+DROP TABLE imagenes;
+DROP TABLE imagenes_productos;
 SELECT * FROM producto;
 SELECT * FROM imagenes;
 SELECT * FROM imagenes_productos;
