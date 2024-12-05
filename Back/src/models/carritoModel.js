@@ -36,7 +36,6 @@ const getAllImagesInCarrito = async (id_usuario) => {
   );
   return result;
 };
-
 const deletePorductoFromCarrito = async (id_usuario, id_producto) => {
   const [result] = await db.query(
     "DELETE FROM carrito WHERE id_usuario = ? AND id_producto = ?",

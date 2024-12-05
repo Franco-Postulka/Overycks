@@ -1,4 +1,8 @@
 const productoModel = require("../models/productModel");
+const {
+  validacionSchema,
+  createProductSchema,
+} = require("../utils/validacion");
 
 const getProductWithImages = async (req, res) => {
   try {
@@ -66,4 +70,34 @@ const getAllProductsWithImages = async (req, res) => {
   }
 };
 
-module.exports = { getProductWithImages, getAllProductsWithImages };
+const createProduct = async (req, res) => {
+  try {
+    const { titulo, descripcion, precio, imagenes } = createProductSchema.parse(
+      req.body
+    );
+
+    const result = await productoModel.insertProduct(
+      titulo,
+      descripcion,
+      precio,
+      imagenes
+    );
+    res.status(201).json({
+      status: "success",
+      message: "Producto creado con exito",
+      userID: result.insertId,
+    });
+  } catch (error) {
+    res.status(400).json({
+      stauts: "error",
+      message: "Error al crear el producto",
+      error: error.message,
+    });
+  }
+};
+
+module.exports = {
+  getProductWithImages,
+  getAllProductsWithImages,
+  createProduct: [validacionSchema(createProductSchema), createProduct],
+};

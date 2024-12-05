@@ -29,8 +29,7 @@ const getAllProducts = async () => {
   );
   return result;
 };
-
-//traer las imagenes 
+//traer las imagenes
 const getImages = async () => {
   const [result] = await db.query("SELECT id, url FROM imagenes;");
   return result;
@@ -43,10 +42,47 @@ const getImagesMapedProductos = async () => {
   return result;
 };
 
+const insertProduct = async (titulo, descripcion, precio, imagenes) => {
+  const connection = await db.getConnection();
+  try {
+    await connection.beginTransaction();
+    //insercion en la tabla producto
+    const [productoResult] = await connection.query(
+      "INSERT INTO producto (titulo, descripcion, precio) VALUES (?, ?, ?)",
+      [titulo, descripcion, precio]
+    );
+    const idProducto = productoResult.insertId;
+
+    //Insercion en la tabla imagenes y su tabla de interrelacion
+    for (const url of imagenes) {
+      const [imagenResult] = await connection.query(
+        "INSERT INTO imagenes (url) VALUES (?)",
+        [url]
+      );
+      const idImagen = imagenResult.insertId;
+
+      await connection.query(
+        "INSERT INTO imagenes_productos (id_producto, id_imagenes) VALUES (?, ?)",
+        [idProducto, idImagen]
+      );
+    }
+
+    await connection.commit();
+    return { success: true, productId: idProducto };
+  } catch (error) {
+    await connection.rollback();
+    console.error("Error al insertar producto e imágenes:", error);
+    return { success: false, error };
+  } finally {
+    connection.release();
+  }
+};
+
 module.exports = {
   findProductById,
   findImagesByProductId,
   getAllProducts,
   getImages,
   getImagesMapedProductos,
+  insertProduct,
 };
