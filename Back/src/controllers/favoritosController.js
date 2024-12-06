@@ -1,6 +1,6 @@
 const favoritosModel = require("../models/favoritosModel");
 
-//Agregar a favoritos
+// Agregar a favoritos
 const addToFavorites = async(req, res) =>
 {
     try
