@@ -93,7 +93,7 @@ h1 {
 }
 .articulo:hover {
   background-color: rgb(242, 241, 241);
-  padding: 0;
+  padding: 4px;
 }
 .articulo img {
   width: 200px;
