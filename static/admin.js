@@ -90,6 +90,7 @@ const agregarDatos = async () =>
     if(!token || !userid)
     {
         alert("Debes iniciar sesion para realizar esta operacion")
+        window.location.href = "../HTMLS/login.html";
     };
 
     try
@@ -97,22 +98,23 @@ const agregarDatos = async () =>
         const response = await fetch("http://localhost:3000/api/product/create", 
         {
             method : "POST",
-            headers : {"Content-Type": "application/json"},
+            headers : {"Content-Type": "application/json",
+            Authorization: `Bearer ${token}`},
             body : JSON.stringify(datos)
         });
         
         if (!response.ok) 
         {
             const errorData = await response.json();
-            if(errorData.message === "")
+            if(errorData.message === "el token no es valido")
             {
-                
+              alert("No tienes acceso a esta seccion");
+              localStorage.removeItem("token");
+              localStorage.removeItem("userid");
+              window.location.href = "../HTMLS/login.html";
             };
         } 
-        else 
-        {
-            alert("Error al agregar el producto");
-        }
+        alert(`Error: ${errorData.message}`);
     }
     catch
     {
