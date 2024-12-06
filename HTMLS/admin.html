@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/adminStyle.css">
+    <title>Admin</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <h1>OVERYCKS</h1>
+        </nav>
+    </header>
+    <main>
+        <section id="menu">
+            <div id="user">
+                <img src="" alt="">
+                <h3 id="userName">Julieta</h3>
+                <h4 id="rango"></h4>
+            </div>
+
+            <div id="line"></div>
+
+            <article>
+                <div id="productos">
+                    <div>
+                        <img src="" alt="">
+                        <h3>Productos</h3>
+                        <img src="" alt="">
+                    </div>
+                    <div>
+                        <a href="#" id="agregar">Agregar producto</a>
+                    </div>
+                    <div>
+                        <a href="#" id="modificar">Administar productos</a>
+                    </div>
+                </div>
+
+                <div id="usuarios">
+                    <div>
+                        <img src="" alt="">
+                        <h3>Usuarios</h3>
+                        <img src="" alt="">
+                    </div>
+                    <div>
+                        <a href="#">Modificar usuario</a>
+                    </div>
+                    <div>
+                        <a href="#">Eliminar usuario</a>
+                    </div>
+                </div>
+
+                <div id="ventas">
+                    <div>
+                        <img src="" alt="">
+                        <h3>Ventas</h3>
+                        <img src="" alt="">
+                    </div>
+                    <div>
+                        <a href="#">Historial de ventas</a>
+                    </div>
+                </div>
+            </article>
+        </section>
+        
+        <section>
+            <article id="agregarProductos">
+                <div>
+                    <h4>PRODUCTOS</h4>
+                </div>
+                <div>
+                    <h2>Agregar productos</h2>
+                </div>
+                <div>
+                    <form action="">
+                        <div>
+                            <label for="titulo">Titulo del producto:</label><br>
+                            <input name="titulo" type="text"><br>
+    
+                            <label for="descripcion">Descripcion del producto:</label><br>
+                            <input name="descripcion" type="text"><br>
+    
+                            <label for="talles">Talles disponibles:</label><br>
+                            <input name="talles" type="number"><br>
+                            <input name="talles" type="number"><br>
+                            <input name="talles" type="number"><br>
+                        </div>
+
+                        <div>
+                            <label for="imagenes">Imagenes del producto:</label><br>
+                            <input name="imagenes" type="url"><br>
+                            <input name="imagenes" type="url"><br>
+                            <input name="imagenes" type="url"><br>
+                            <input name="imagenes" type="url"><br>
+    
+                            <label for="precio">Precio del producto:</label><br>
+                            <input name="precio" type="text"><br>
+                        </div>                   
+                    </form>
+                </div>
+            </article>
+
+            <article id="administrarProductos"></article>
+        </section>
+    </main>
+    <script src="../static/admin.js"></script>
+</body>
+</html>
