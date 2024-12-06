@@ -50,3 +50,8 @@ form
 {
     display: flex;
 }
+
+#agregarProductos
+{
+    display: none;
+}
