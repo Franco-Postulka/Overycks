@@ -174,7 +174,7 @@ const cargarRopa = async (cantidadProductos, pagina) => {
               <span>$ ${articulo.precio}</span>
               </div>
               <div>
-              <button type="button" class="btn btn-dark">Eliminar</button>
+              <button type="button" class="btn btn-dark" onclick="eliminarProducto(${articulo.id})">Eliminar</button>
               <button type="button" class="btn btn-dark">Modificar</button>
               </div>
               </div>
@@ -221,5 +221,45 @@ const retroceder = async () => {
     }
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+const eliminarProducto = async (id_producto) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Necesitas iniciar sesión para eliminar el producto.");
+    window.location.href = "../HTMLS/login.html";
+    return;
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/product/delete/${id_producto}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message === "el token no es valido") {
+        console.log(errorData);
+        alert(`Necesitas iniciar sesión para eliminar un producto.`);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userid");
+        window.location.href = "../HTMLS/login.html";
+        return;
+      }
+      alert(`Error: ${errorData.message}`);
+      return;
+    }
+    const data = await response.json();
+    alert("Producto eliminado con éxito!");
+    window.location.href = "../HTMLS/admin.html";
+  } catch (error) {
+    console.error("Error al elimnar el producto:", error.message);
+    alert("Hubo un error. Intenta de nuevo.");
   }
 };
