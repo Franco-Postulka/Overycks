@@ -3,122 +3,118 @@
 const agregar = document.getElementById("agregar");
 const administrar = document.getElementById("administrar");
 
-const formAgregar = document.getElementById("agregarProductos");
-const formAdministrar = document.getElementById("administrarProductos");
+const seccionAgregar = document.getElementById("agregarProductos");
+const seccionAdministrar = document.getElementById("administrarProductos");
 
-agregar.addEventListener("click", () =>
-{
-    formAgregar.style.display = "block";
-    formAdministrar.style.display = "none";
+agregar.addEventListener("click", () => {
+  seccionAgregar.style.display = "block";
+  seccionAdministrar.style.display = "none";
 });
 
-administrar.addEventListener("click", () =>
-{
-    formAdministrar.style.display = "block";
-    formAgregar.style.display = "none";
+administrar.addEventListener("click", () => {
+  seccionAdministrar.style.display = "block";
+  seccionAgregar.style.display = "none";
+  document.addEventListener("DOMContentLoaded", () => {
+    cargarRopa(productosPorPagina, paginaActual);
+  });
 });
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 //Evento para validar inputs para agregar un producto
 
-const botonAgregar = document.getElementById("botonAgregar");
+const formAgregar = document.getElementById("form-agregar");
 
-botonAgregar.addEventListener("submit", (e) =>
-{
-    e.preventDefault();
-    if(validarDatos())
-    {
-        agregarDatos();
+if (formAgregar) {
+  formAgregar.addEventListener("submit", validarDatos);
+}
+
+function validarDatos(e) {
+  e.preventDefault();
+  const titulo = document.getElementsByName("titulo")[0].value;
+  const descripcion = document.getElementsByName("descripcion")[0].value;
+  let precio = document.getElementsByName("precio")[0].value;
+  const imagenes = document.getElementsByName("imagenes");
+
+  if (!titulo || !descripcion || !precio) {
+    alert("Complete los campos requeridos");
+    return false;
+  }
+
+  if (titulo.length < 3 || titulo.length > 120) {
+    alert("El titulo debe estar entre 3 a 120 caracteres");
+    return false;
+  }
+  if (descripcion.length < 10 || descripcion.length > 500) {
+    alert("La descripcion debe estar entre 10 a 500 caracteres");
+    return false;
+  }
+
+  if (isNaN(precio)) {
+    alert("El precio debe ser un numero valido");
+    return false;
+  }
+
+  for (const imagen of imagenes) {
+    if (imagen.value == "") {
+      alert("Complete los campos requeridos");
+      return false;
     }
-});
+  }
+  agregarDatos();
+}
 
-//Funcion para validar los datos
+const agregarDatos = async () => {
+  console.log("enviando datos al servidor");
+  const datos = {
+    titulo: document.getElementsByName("titulo")[0].value,
+    descripcion: document.getElementsByName("descripcion")[0].value,
+    precio: parseFloat(document.getElementsByName("precio")[0].value),
+    imagenes: Array.from(document.getElementsByName("imagenes")).map(
+      (input) => input.value
+    ),
+  };
 
-function validarDatos()
-{
-    const titulo = document.getElementsByName("titulo")[0].value;
-    const descripcion = document.getElementsByName("descripcion")[0].value;
-    const precio = document.getElementsByName("precio")[0].value;
-    const imagenes = document.getElementsByName("imagenes");
+  const token = localStorage.getItem("token");
 
-    if(!titulo || !descripcion || !precio)
-    {
-        alert("Complete los campos requeridos");
-        return false;
-    }
+  if (!token) {
+    alert("Debes iniciar sesion para realizar esta operacion");
+    window.location.href = "../HTMLS/login.html";
+    return;
+  }
 
-    if(titulo.length > 25 || titulo.length < 25)
-    {
-        alert("El titulo no debe estar entre 3 a 25 caracteres")
-        return false;
-    }
-
-    precio = precio.replace(",", ".");
-    if(isNaN(precio))
-    {
-        alert("El precio debe ser un numero valido")
-        return false;
-    };
-    
-    for (const imagen of imagenes) 
-    {
-        if(imagen.value == "")
-        {
-            alert("Complete los campos requeridos")
-            return false;
-        }
-    };
-};
-
-//Variable asincronica para mandar los datos a la bd
-
-const agregarDatos = async () =>
-{
-    const datos = 
-    {
-        titulo : document.getElementsByName("titulo")[0].value,
-        descripcion : document.getElementsByName("descripcion")[0].value,
-        precio : document.getElementsByName("precio")[0].value,
-        imagenes :document.getElementsByName("imagenes")
-    };
-
-    const token = localStorage.getItem("token");
-    const userid = localStorage.getItem("userId");
-
-    if(!token || !userid)
-    {
-        alert("Debes iniciar sesion para realizar esta operacion")
+  try {
+    const response = await fetch("http://localhost:3000/api/product/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(datos),
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message === "el token no es valido") {
+        console.log(errorData);
+        alert(`Necesitas iniciar sesión para crear un producto`);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userid");
         window.location.href = "../HTMLS/login.html";
-    };
-
-    try
-    {
-        const response = await fetch("http://localhost:3000/api/product/create", 
-        {
-            method : "POST",
-            headers : {"Content-Type": "application/json",
-            Authorization: `Bearer ${token}`},
-            body : JSON.stringify(datos)
-        });
-        
-        if (!response.ok) 
-        {
-            const errorData = await response.json();
-            if(errorData.message === "el token no es valido")
-            {
-              alert("No tienes acceso a esta seccion");
-              localStorage.removeItem("token");
-              localStorage.removeItem("userid");
-              window.location.href = "../HTMLS/login.html";
-            };
-        } 
-        alert(`Error: ${errorData.message}`);
+        return;
+      }
+      alert(`Error: ${errorData.message}`);
+      return;
     }
-    catch
-    {
-        alert("Hubo un error. Intenta de nuevo.");
-    };
+    const data = await response.json();
+    alert("Producto creado con éxito!");
+    const formAgregar = document.getElementById("form-agregar");
+    if (formAgregar) {
+      formAgregar.reset();
+    }
+  } catch (error) {
+    console.error("Error al crear el producto:", error.message);
+    alert("Hubo un error. Intenta de nuevo.");
+  }
 };
 /////////////////////////////////////////////
 
@@ -158,7 +154,6 @@ const cargarRopa = async (cantidadProductos, pagina) => {
     const hasta = cantidadProductos * pagina;
     const desde = hasta - cantidadProductos;
     const productosPorPagina = data.productsWithImages.slice(desde, hasta);
-
     let productos = "";
     productosPorPagina.forEach((articulo) => {
       productos += `
@@ -173,7 +168,7 @@ const cargarRopa = async (cantidadProductos, pagina) => {
               <span>$ ${articulo.precio}</span>
               </div>
               <div>
-              <button type="button" class="btn btn-dark">Eliminar</button>
+              <button type="button" class="btn btn-dark" onclick="eliminarProducto(${articulo.id})">Eliminar</button>
               <button type="button" class="btn btn-dark">Modificar</button>
               </div>
               </div>
@@ -220,5 +215,45 @@ const retroceder = async () => {
     }
   } catch (error) {
     console.log(error.message);
+  }
+};
+
+const eliminarProducto = async (id_producto) => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("Necesitas iniciar sesión para eliminar el producto.");
+    window.location.href = "../HTMLS/login.html";
+    return;
+  }
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/product/delete/${id_producto}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message === "el token no es valido") {
+        console.log(errorData);
+        alert(`Necesitas iniciar sesión para eliminar un producto.`);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userid");
+        window.location.href = "../HTMLS/login.html";
+        return;
+      }
+      alert(`Error: ${errorData.message}`);
+      return;
+    }
+    const data = await response.json();
+    alert("Producto eliminado con éxito!");
+    window.location.href = "../HTMLS/admin.html";
+  } catch (error) {
+    console.error("Error al elimnar el producto:", error.message);
+    alert("Hubo un error. Intenta de nuevo.");
   }
 };
