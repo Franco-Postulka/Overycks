@@ -32,7 +32,7 @@ a:hover {
   color: darkcyan;
 }
 a:active {
-  color:black;
+  color: black;
 }
 
 #menu {
@@ -57,7 +57,7 @@ form {
 #admin-articles {
   width: 80%;
   display: flex;
-  margin: 0 0 40px auto;
+  margin: 45px 0 40px auto;
   flex-direction: column;
 }
 #administrarProductos {
@@ -66,6 +66,17 @@ form {
   justify-content: center;
   align-items: center;
 }
+#administrarProductos h2 {
+  text-align: center;
+  margin: 0 auto;
+}
+
+#administrarProductos #paginador {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 #muestra-productos {
   display: flex;
   flex-wrap: wrap;
@@ -97,65 +108,49 @@ span {
   font-weight: bold;
 }
 
-
-#agregarProductos
-{
+#agregarProductos {
   display: none;
 }
-#user
-{
+#user {
   display: flex;
   justify-content: center;
   margin: 40px 0px;
 }
 
-.categorias
-{
+.categorias {
   margin: 15px;
 }
 
-.enlaces
-{
+.enlaces {
   margin: 10px 35px;
 }
 
-.titulos img
-{
+.titulos img {
   width: 12%;
   height: 12%;
   margin-right: 10px;
 }
-.titulos h3
-{
+.titulos h3 {
   margin-top: 10px;
 }
-.titulos
-{
+.titulos {
   display: flex;
   align-items: center;
 }
 
-@media (max-width: 950px)
-{
-  .titulos h3
-  {
+@media (max-width: 950px) {
+  .titulos h3 {
     display: none;
   }
-  .titulos img
-  {
+  .titulos img {
     display: none;
   }
-  #userName
-  {
+  #userName {
     font-size: large;
   }
 }
-@media (max-width: 800px)
-{
-  .enlaces
-  {
+@media (max-width: 800px) {
+  .enlaces {
     margin: auto;
   }
 }
-
-
