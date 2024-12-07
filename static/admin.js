@@ -5,15 +5,18 @@ const administrar = document.getElementById("administrar");
 
 const seccionAgregar = document.getElementById("agregarProductos");
 const seccionAdministrar = document.getElementById("administrarProductos");
+const seccionModificar = document.getElementById("modificarProductos");
 
 agregar.addEventListener("click", () => {
   seccionAgregar.style.display = "block";
   seccionAdministrar.style.display = "none";
+  seccionModificar.style.display = "none";
 });
 
 administrar.addEventListener("click", () => {
   seccionAdministrar.style.display = "block";
   seccionAgregar.style.display = "none";
+  seccionModificar.style.display = "none";
   document.addEventListener("DOMContentLoaded", () => {
     cargarRopa(productosPorPagina, paginaActual);
   });
@@ -145,7 +148,6 @@ const cargarRopa = async (cantidadProductos, pagina) => {
     };
 
     const data = await fetchData();
-    console.log(data);
     // Validar si data está disponible
     if (!data || !data.productsWithImages) {
       throw new Error("No se pudo obtener los productos o están vacíos.");
@@ -169,7 +171,7 @@ const cargarRopa = async (cantidadProductos, pagina) => {
               </div>
               <div>
               <button type="button" class="btn btn-dark" onclick="eliminarProducto(${articulo.id})">Eliminar</button>
-              <button type="button" class="btn btn-dark">Modificar</button>
+              <button type="button" class="btn btn-dark" onclick="atualizarProducto(${articulo.id})">Modificar</button>
               </div>
               </div>
               `;
@@ -255,5 +257,189 @@ const eliminarProducto = async (id_producto) => {
   } catch (error) {
     console.error("Error al elimnar el producto:", error.message);
     alert("Hubo un error. Intenta de nuevo.");
+  }
+};
+
+const atualizarProducto = async (id) => {
+  const result = await traerProducto(id);
+  const initialValue = result.productWithImages;
+  const { titulo, descripcion, precio, images } = result.productWithImages;
+
+  const form = document.querySelector("#form-modificar");
+  const inputTitulo = form.querySelector("input[name='titulo-modificar']");
+  const inputDescripcion = form.querySelector(
+    "textarea[name='descripcion-modificar']"
+  );
+  const inputPrecio = form.querySelector("input[name='precio-modificar']");
+  const inputImagenes = form.querySelectorAll(
+    "input[name='imagenes-modificar']"
+  );
+
+  inputTitulo.value = titulo;
+  inputDescripcion.value = descripcion;
+  inputPrecio.value = precio;
+
+  // Cargar las URLs de las imágenes
+  images.forEach((imagen, index) => {
+    if (inputImagenes[index]) {
+      inputImagenes[index].value = imagen.url;
+    }
+  });
+  seccionAgregar.style.display = "none";
+  seccionAdministrar.style.display = "none";
+  seccionModificar.style.display = "block";
+
+  form.addEventListener("submit", (e) =>
+    validarDatosModificar(e, initialValue)
+  );
+};
+
+function validarDatosModificar(e, initialValues) {
+  e.preventDefault();
+  const titulo = document.getElementsByName("titulo-modificar")[0].value;
+  const descripcion = document.getElementsByName("descripcion-modificar")[0]
+    .value;
+  let precio = document.getElementsByName("precio-modificar")[0].value;
+  const imagenes = document.getElementsByName("imagenes-modificar");
+
+  if (!titulo || !descripcion || !precio) {
+    alert("Complete los campos requeridos");
+    return false;
+  }
+
+  if (titulo.length < 3 || titulo.length > 120) {
+    alert("El titulo debe estar entre 3 a 120 caracteres");
+    return false;
+  }
+  if (descripcion.length < 10 || descripcion.length > 500) {
+    alert("La descripcion debe estar entre 10 a 500 caracteres");
+    return false;
+  }
+
+  if (isNaN(precio)) {
+    alert("El precio debe ser un numero valido");
+    return false;
+  }
+
+  for (const imagen of imagenes) {
+    if (imagen.value == "") {
+      alert("Complete los campos requeridos");
+      return false;
+    }
+  }
+  modificarDatos(initialValues);
+}
+
+const modificarDatos = async (initialValues) => {
+  const datos = {
+    titulo: document.getElementsByName("titulo-modificar")[0].value,
+    descripcion: document.getElementsByName("descripcion-modificar")[0].value,
+    precio: parseFloat(document.getElementsByName("precio-modificar")[0].value),
+    imagenes: Array.from(document.getElementsByName("imagenes-modificar")).map(
+      (input) => input.value
+    ),
+  };
+  // console.log("Initialvalues: ", initialValues);
+  // console.log("datos: ", datos);
+
+  const datosModificados = {};
+  let seModifico = false;
+  for (const key in datos) {
+    if (key === "imagenes") {
+      const initialUrls = initialValues.images.map((img) => img.url);
+      const currentUrls = datos.imagenes;
+
+      if (JSON.stringify(initialUrls) !== JSON.stringify(currentUrls)) {
+        datosModificados[key] = [];
+        seModifico = true;
+        datosModificados[key] = currentUrls.map((url, index) => {
+          const matchingImage = initialValues.images.find(
+            (img) => img.url !== url
+          );
+          return matchingImage
+            ? matchingImage
+            : { id: initialValues.images.id, url };
+        });
+      } else {
+      }
+    } else if (
+      JSON.stringify(initialValues[key]) !== JSON.stringify(datos[key])
+    ) {
+      datosModificados[key] = datos[key];
+      seModifico = true;
+    }
+  }
+  if (!seModifico) {
+    alert("Debe modificar algun dato para poder enviar la solicitud.");
+    return;
+  }
+  console.log("Para mandar a modificar:", datosModificados);
+  actualizarEnServidor(initialValues.id, datosModificados);
+};
+
+const actualizarEnServidor = async (id, datosModificados) => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("Debes iniciar sesion para realizar esta operacion");
+    window.location.href = "../HTMLS/login.html";
+    return;
+  }
+  console.log("paso la primera verificacion de token");
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/product/update/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(datosModificados),
+      }
+    );
+    console.log(response);
+    if (!response.ok) {
+      const errorData = await response.json();
+      if (errorData.message === "el token no es valido") {
+        console.log(errorData);
+        alert(`Necesitas iniciar sesión para actualizar un producto`);
+        localStorage.removeItem("token");
+        localStorage.removeItem("userid");
+        window.location.href = "../HTMLS/login.html";
+        return;
+      }
+      alert(`Error: ${errorData.message}`);
+      return;
+    }
+    const data = await response.json();
+    alert("Producto actualizado con éxito!");
+    const formAgregar = document.getElementById("form-modificar");
+    if (formAgregar) {
+      formAgregar.reset();
+    }
+    window.location.href = `../HTMLS/articulo.html?id=${id}`;
+  } catch (error) {
+    console.error("Error al actualizar el producto:", error.message);
+    alert("Hubo un error. Intenta de nuevo.");
+  }
+};
+
+const traerProducto = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/product/products/${id}`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.error(
+        `Error en el fetch del producto con id:${id}, status ${response.status}`
+      );
+      return null;
+    }
+  } catch (error) {
+    console.log(error.message);
   }
 };
