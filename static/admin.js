@@ -116,7 +116,7 @@ const agregarDatos = async () => {
     alert("Hubo un error. Intenta de nuevo.");
   }
 };
-/////////////////////////////////////
+/////////////////////////////////////////////
 
 const containerProductos = document.getElementById("muestra-productos");
 const productosPorPagina = 8;
