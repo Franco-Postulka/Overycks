@@ -13,10 +13,13 @@ app.use(express.json());
 const userRouter = require("./routers/userRouter");
 const productRouter = require("./routers/productRouter");
 const carritoRouter = require("./routers/carritoRouter");
+const favoritosRouter = require("./routers/favoritosRouter");
+
 // Use de las Routes
 app.use("/api/user", userRouter);
 app.use("/api/product", productRouter);
 app.use("/api/carrito", carritoRouter);
+app.use("/api/favoritos", favoritosRouter);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Servidor corriendo en puerto ${PORT}`));

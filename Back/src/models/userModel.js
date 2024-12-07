@@ -27,6 +27,20 @@ const findUserByUsername = async (username) => {
   return result;
 };
 
+const getUserById = async (userId) =>
+{
+  const [result] = await db.query("SELECT id FROM usuario WHERE id = ?",
+  [userId]);
+  if(result.length > 0)
+  {
+    return true;
+  }
+  else
+  {
+    return false;
+  }
+}
+
 //obtencion de usuario por pagina
 const findUserWithPagination = async (limit, offset) => {
   const [result] = await db.query(
@@ -62,4 +76,5 @@ module.exports = {
   findUserWithPagination,
   updateUser,
   deleteUser,
+  getUserById
 };
