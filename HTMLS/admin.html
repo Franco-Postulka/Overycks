@@ -69,20 +69,15 @@
 
       <section id="admin-articles">
         <article id="agregarProductos">
-          <div>
-            <h4>PRODUCTOS</h4>
-          </div>
-          <div>
-            <h2>Agregar productos</h2>
-          </div>
-          <div>
+          <div id="contenedora-form">
             <form action="" id="form-agregar">
+              <h2>Agregar productos</h2>
               <div>
                 <label for="titulo">Titulo del producto:</label><br />
                 <input name="titulo" type="text" /><br />
 
                 <label for="descripcion">Descripcion del producto:</label><br />
-                <input name="descripcion" type="text" /><br />
+                <textarea name="descripcion" id=""></textarea>
               </div>
 
               <div>
@@ -94,8 +89,8 @@
 
                 <label for="precio">Precio del producto:</label><br />
                 <input name="precio" type="text" /><br />
-
-              <button id="botonAgregar">Agregar</button>
+              </div>
+              <button class="btn btn-dark" id="botonAgregar">Agregar</button>
             </form>
           </div>
         </article>
