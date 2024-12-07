@@ -1,4 +1,5 @@
 const z = require("zod");
+const { updateProduct } = require("../models/productModel");
 
 const validacionSchema = (schema) => (req, res, next) => {
   try {
@@ -40,9 +41,21 @@ const createProductSchema = z.object({
     .length(4, "Debe proporcionar exactamente 4 URLs de imágenes."),
 });
 
+const updateProductSchema = createProductSchema
+  .extend({
+    imagenes: z.array(
+      z.object({
+        id: z.number(),
+        url: z.string().url("Cada imagen debe ser una URL válida."),
+      })
+    ),
+  })
+  .partial();
+
 module.exports = {
   validacionSchema,
   createUserSchema,
   updateUserSchema,
   createProductSchema,
+  updateProductSchema,
 };

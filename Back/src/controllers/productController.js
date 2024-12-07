@@ -2,6 +2,7 @@ const productoModel = require("../models/productModel");
 const {
   validacionSchema,
   createProductSchema,
+  updateProductSchema,
 } = require("../utils/validacion");
 
 const getProductWithImages = async (req, res) => {
@@ -124,9 +125,35 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updateFields = updateProductSchema.parse(req.body);
+
+    const result = await productoModel.updateProduct(id, updateFields);
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Producto no encontrado." });
+    }
+    res.json({
+      status: "success",
+      message: "Producto actualizado con exito.",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({
+      stauts: "error",
+      message: "Error al acutalizar el producto",
+      error: error.message,
+    });
+  }
+};
+
 module.exports = {
   getProductWithImages,
   getAllProductsWithImages,
   createProduct: [validacionSchema(createProductSchema), createProduct],
   deleteProduct,
+  updateProduct,
 };
