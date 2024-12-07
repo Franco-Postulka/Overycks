@@ -69,7 +69,6 @@ function validarDatos()
             return false;
         }
     };
-
 };
 
 //Variable asincronica para mandar los datos a la bd
@@ -121,7 +120,7 @@ const agregarDatos = async () =>
         alert("Hubo un error. Intenta de nuevo.");
     };
 };
-/////////////////////////////////////
+/////////////////////////////////////////////
 
 const containerProductos = document.getElementById("muestra-productos");
 const productosPorPagina = 8;
