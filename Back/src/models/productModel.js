@@ -110,6 +110,48 @@ const deleteProduct = async (productID) => {
     connection.release();
   }
 };
+const updateProduct = async (productID, updatedFields) => {
+  const connection = await db.getConnection();
+  try {
+    if (!productID) throw new Error("El productID es obligatorio.");
+    await connection.beginTransaction();
+    const productFields = { ...updatedFields };
+    delete productFields.imagenes;
+
+    totalAffectedRows = 0;
+    if (Object.keys(productFields).length > 0) {
+      const setClause = Object.keys(productFields)
+        .map((key) => `${key} = ?`)
+        .join(", ");
+      const values = [...Object.values(productFields), productID];
+
+      const [result] = await connection.query(
+        `UPDATE producto SET ${setClause} WHERE id = ?`,
+        values
+      );
+      totalAffectedRows = result.affectedRows;
+    }
+    if (updatedFields.imagenes) {
+      const imagenes = updatedFields.imagenes;
+
+      for (const imagen of imagenes) {
+        const [imageResult] = await connection.query(
+          "UPDATE imagenes SET url = ? WHERE id = ?",
+          [imagen.url, imagen.id]
+        );
+        totalAffectedRows += imageResult.affectedRows;
+      }
+    }
+    await connection.commit();
+    return { success: true, affectedRows: totalAffectedRows };
+  } catch (error) {
+    await connection.rollback();
+    console.error("Error al actualizar el producto e imágenes:", error);
+    return { success: false, error };
+  } finally {
+    connection.release();
+  }
+};
 
 module.exports = {
   findProductById,
@@ -119,4 +161,5 @@ module.exports = {
   getImagesMapedProductos,
   insertProduct,
   deleteProduct,
+  updateProduct,
 };

@@ -145,7 +145,7 @@ const cargarRopa = async (cantidadProductos, pagina) => {
     };
 
     const data = await fetchData();
-
+    console.log(data);
     // Validar si data está disponible
     if (!data || !data.productsWithImages) {
       throw new Error("No se pudo obtener los productos o están vacíos.");
