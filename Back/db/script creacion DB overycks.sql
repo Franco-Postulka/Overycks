@@ -5,7 +5,7 @@ CREATE TABLE usuario(
 id INT PRIMARY KEY AUTO_INCREMENT,
 nombre VARCHAR(40) NOT NULL,
 email VARCHAR(50) NOT NULL,
-contrasenia VARCHAR(50) NOT NULL
+contrasenia VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE producto(
@@ -241,13 +241,9 @@ INSERT INTO imagenes_productos (id_producto, id_imagenes) VALUES
 ;
 
 use overycks;
-DROP TABLE carrito;
-DROP TABLE producto;
-DROP TABLE favoritos;
-DROP TABLE imagenes;
-DROP TABLE imagenes_productos;
 SELECT * FROM producto;
 SELECT * FROM imagenes;
 SELECT * FROM imagenes_productos;
 SELECT * FROM usuario;
 SELECT * FROM carrito;
+SELECT * FROM favoritos;
